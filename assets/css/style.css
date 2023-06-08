@@ -1,0 +1,60 @@
+
+:root {
+  --primary: #00BBC9;
+  --secondary:#00747C;
+    --darGrey: #878787;
+    --grey: #CACACA;
+    --light: #F2F2F2;
+  }
+  
+
+h1 {
+    color: var(--light);
+}
+
+.customBtn {
+  border-color: var(--primary);
+  color: black;
+}
+.customBtn:hover {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+.form-control{
+  border-color: var(--grey);
+}
+
+.searcher{
+  border-bottom: var(--grey);
+  border-bottom-style: solid;
+}
+
+.history{
+  background-color: var(--grey);
+  color: black;
+}
+
+.history:hover{
+  background-color: var(--darGrey);
+}
+
+.divider{
+  height: 1px;
+  background-color: var(--grey);
+}
+p{
+  font-size: medium;
+  line-height: 40%;
+}
+
+.Hide{
+  display: none;;
+}
+.card-header{
+  background-color: var(--secondary);
+  color: var(--light);
+}
+.mainCardHeader{
+  background-color: var(--primary);
+  color: black;
+}
