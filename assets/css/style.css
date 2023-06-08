@@ -1,25 +1,25 @@
-
 :root {
   --primary: #00BBC9;
   --secondary:#00747C;
     --darGrey: #878787;
     --grey: #CACACA;
     --light: #F2F2F2;
-  }
-  
+}
 
 h1 {
     color: var(--light);
+}
+
+p{
+  font-size: medium;
+  line-height: 0.5em;
 }
 
 .customBtn {
   border-color: var(--primary);
   color: black;
 }
-.customBtn:hover {
-  background-color: var(--primary);
-  border-color: var(--primary);
-}
+
 .form-control{
   border-color: var(--grey);
 }
@@ -34,17 +34,9 @@ h1 {
   color: black;
 }
 
-.history:hover{
-  background-color: var(--darGrey);
-}
-
 .divider{
   height: 1px;
   background-color: var(--grey);
-}
-p{
-  font-size: medium;
-  line-height: 40%;
 }
 
 .Hide{
@@ -57,4 +49,13 @@ p{
 .mainCardHeader{
   background-color: var(--primary);
   color: black;
+}
+
+.history:hover{
+  background-color: var(--darGrey);
+}
+
+.customBtn:hover {
+  background-color: var(--primary);
+  border-color: var(--primary);
 }
