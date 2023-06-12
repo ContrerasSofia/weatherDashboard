@@ -1,11 +1,15 @@
 var searchBtn = $('.citySearch');
 var entryData = $('.cityEntry');
+var buttonE1 = $('.history');
 var APIKey = '970b86b32913a5303a116990d171f9ba';
 
-searchBtn.on('click', function (event) {
-    event.preventDefault();
-    var cityName = entryData.val().trim();
-    getParameters(cityName);
+renderHistory();
+
+buttonE1.on('click', function (event) {
+    console.log('historyWeather');
+    console.log(this.event);
+    
+    console.log('entro');
 });
 
 function getParameters(cityName){
@@ -18,7 +22,7 @@ function getParameters(cityName){
           console.log(data);
           getWeather(data[0].lat, data[0].lon);
       });
-}
+};
 
 function getWeather(lat, lon){
     var requestUrl = 'https://api.openweathermap.org/data/2.5/forecast?lat='+lat+'&lon='+lon+'&cnt=45&appid='+APIKey+'&units=imperial';
@@ -29,8 +33,9 @@ function getWeather(lat, lon){
       .then(function (data) {
           console.log(data);
           renderWeather(data);
+          saveHistory(data,lat,lon);
       });
-}
+};
 
 function renderWeather(data){
     var cardBody = $('.blockquote');
@@ -66,3 +71,34 @@ function renderWeather(data){
     cardHeader[0].replaceChild(day,  cardHeader[0].childNodes[0]);
 
 };
+
+function saveHistory(data, lat, lon){    
+    const city = {
+      name : data.city.name,
+      Lat : lat,
+      Lon : lon,
+    };
+  
+    var historyWeather = JSON.parse(localStorage.getItem('historyWeather'));
+
+    if(historyWeather == null)
+        historyWeather = Array();
+  
+    historyWeather.push(city);
+    localStorage.setItem('historyWeather', JSON.stringify(historyWeather));
+    renderHistory();
+ };
+
+function renderHistory(){
+    var history = $('.historyButtons');
+    var historyWeather = JSON.parse(localStorage.getItem('historyWeather'));
+    
+    history.empty();
+
+    for (let i = 0; i < historyWeather.length; i++) {
+        var button = $('<button class="btn history mt-0 mb-0" type="button"></button>');
+        button.text(historyWeather[i].name);
+        history.append(button);        
+    }
+};
+
