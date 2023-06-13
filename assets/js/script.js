@@ -21,17 +21,23 @@ function getParameters(cityName){
     var requestUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&limit=1&appid=' + APIKey;
       fetch(requestUrl)
       .then(function (response) {
-        if (response.redirected) {
+        if (response.status == 200) {
             response.json().then(function (data) {
-            getWeather(data[0].lat, data[0].lon);
+            if(data.length > 0)
+                getWeather(data[0].lat, data[0].lon);
+            else{              
+                $('.mainContent').addClass('Hide');
+                $('.alert').removeClass('Hide');
+            }
             });
         } else {
-        console.log('Error fetching city:', error);
-        $('.alert').removeClass('Hide');
+            $('.mainContent').addClass('Hide');
+            $('.alert').removeClass('Hide');
         }
       })
       .catch(error => {
         console.log('Error fetching weather:', error);
+        $('.mainContent').addClass('Hide');
         $('.alert').removeClass('Hide');
       });
 };
@@ -48,11 +54,13 @@ function getWeather(lat, lon){
                 saveHistory(data,lat,lon);
             });
         } else {
+            $('.mainContent').addClass('Hide');
             $('.alert-warning').removeClass('Hide');
         }
       })
       .catch(function (error) {
         console.log('Error fetching weather:', error);
+        $('.mainContent').addClass('Hide');
         $('.alert-warning').removeClass('Hide');
       });
       
@@ -92,7 +100,7 @@ function renderWeather(data){
 
     //Render city tittle 
     var day = document.createElement('h3');
-    day.textContent = data.city.name + ' (' + data.city.country + ')';
+    day.textContent = data.city.name + ' (' + data.city.country + ') ' + dayjs(data.list[0].dt_txt).format('MMMM D, YYYY');
     cardHeader[0].replaceChild(day,  cardHeader[0].childNodes[0]);
 
 };
@@ -116,7 +124,6 @@ function saveHistory(data, lat, lon){
     }
   
     historyWeather.push(city);
-    historyWeather == null;
     localStorage.setItem('historyWeather', JSON.stringify(historyWeather));
     renderHistory();
  };
@@ -126,6 +133,9 @@ function renderHistory(){
     var historyWeather = JSON.parse(localStorage.getItem('historyWeather'));
     
     history.empty();
+
+    if(historyWeather == null)
+        historyWeather = Array();
 
     for (let i = 0; i < historyWeather.length; i++) {
         var button = $('<button class="btn history mt-0 mb-0" type="button"></button>');
