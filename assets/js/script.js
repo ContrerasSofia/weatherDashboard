@@ -21,25 +21,41 @@ function getParameters(cityName){
     var requestUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&limit=1&appid=' + APIKey;
       fetch(requestUrl)
       .then(function (response) {
-          return response.json();
+        if (response.redirected) {
+            response.json().then(function (data) {
+            getWeather(data[0].lat, data[0].lon);
+            });
+        } else {
+        console.log('Error fetching city:', error);
+        $('.alert').removeClass('Hide');
+        }
       })
-      .then(function (data) {
-          getWeather(data[0].lat, data[0].lon);
+      .catch(error => {
+        console.log('Error fetching weather:', error);
+        $('.alert').removeClass('Hide');
       });
 };
 
 function getWeather(lat, lon){
     var requestUrl = 'https://api.openweathermap.org/data/2.5/forecast?lat='+lat+'&lon='+lon+'&cnt=45&appid='+APIKey+'&units=imperial';
+    
     fetch(requestUrl)
       .then(function (response) {
-          return response.json();
+        if (response.ok) {
+            response.json().then(function (data) {
+                $('.alert').addClass('Hide');
+                renderWeather(data);
+                saveHistory(data,lat,lon);
+            });
+        } else {
+            $('.alert-warning').removeClass('Hide');
+        }
       })
-      .then(function (data) {
-        
-        console.log(data);
-          renderWeather(data);
-          saveHistory(data,lat,lon);
+      .catch(function (error) {
+        console.log('Error fetching weather:', error);
+        $('.alert-warning').removeClass('Hide');
       });
+      
 };
 
 function renderWeather(data){
