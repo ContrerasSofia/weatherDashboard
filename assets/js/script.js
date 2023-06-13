@@ -1,16 +1,22 @@
 var searchBtn = $('.citySearch');
 var entryData = $('.cityEntry');
-var buttonE1 = $('.history');
 var APIKey = '970b86b32913a5303a116990d171f9ba';
+var histBtns = $('.historyButtons');
+
 
 renderHistory();
 
-buttonE1.on('click', function (event) {
-    console.log('historyWeather');
-    console.log(this.event);
-    
-    console.log('entro');
+searchBtn.on('click', function (event) {
+    event.preventDefault();
+    var cityName = entryData.val().trim();
+    getParameters(cityName);
 });
+
+histBtns.on('click', '.history', function (event) {
+    var i = $(this).index();
+    var historyWeather = JSON.parse(localStorage.getItem('historyWeather'));
+    getWeather(historyWeather[i].Lat, historyWeather[i].Lon);
+  });
 
 function getParameters(cityName){
     var requestUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&limit=1&appid=' + APIKey;
@@ -80,11 +86,18 @@ function saveHistory(data, lat, lon){
     };
   
     var historyWeather = JSON.parse(localStorage.getItem('historyWeather'));
-
+    
     if(historyWeather == null)
         historyWeather = Array();
+    else{
+        for (let i = 0; i < historyWeather.length; i++) {
+            if(historyWeather[i].name == city.name)
+                return;
+        }
+    }
   
     historyWeather.push(city);
+    historyWeather == null;
     localStorage.setItem('historyWeather', JSON.stringify(historyWeather));
     renderHistory();
  };
