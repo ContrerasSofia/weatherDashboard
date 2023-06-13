@@ -14,7 +14,12 @@ p{
   font-size: medium;
   line-height: 0.5em;
 }
-
+img{
+  width: 50px;
+}
+h3,h5{
+  display: inline;
+}
 .customBtn {
   border-color: var(--primary);
   color: black;

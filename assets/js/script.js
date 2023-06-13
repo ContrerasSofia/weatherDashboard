@@ -3,7 +3,6 @@ var entryData = $('.cityEntry');
 var APIKey = '970b86b32913a5303a116990d171f9ba';
 var histBtns = $('.historyButtons');
 
-
 renderHistory();
 
 searchBtn.on('click', function (event) {
@@ -25,7 +24,6 @@ function getParameters(cityName){
           return response.json();
       })
       .then(function (data) {
-          console.log(data);
           getWeather(data[0].lat, data[0].lon);
       });
 };
@@ -37,7 +35,8 @@ function getWeather(lat, lon){
           return response.json();
       })
       .then(function (data) {
-          console.log(data);
+        
+        console.log(data);
           renderWeather(data);
           saveHistory(data,lat,lon);
       });
@@ -55,16 +54,20 @@ function renderWeather(data){
         var wind = document.createElement('p');
         var humidity = document.createElement('p');
         var title = document.createElement('h5');
+        var img = document.createElement('IMG');
         
         temp.textContent = 'Temp: ' + data.list[index].main.temp + ' °F';
         wind.textContent = 'Wind: ' + data.list[index].wind.speed + ' MPH';
         humidity.textContent = 'Humidity: ' + data.list[index].main.humidity + ' %';
         title.textContent = dayjs(data.list[index].dt_txt).format('MMMM D, YYYY');
+        iconLink = 'https://openweathermap.org/img/wn/' + data.list[index].weather[0].icon + '@2x.png';
+        img.setAttribute('src', iconLink);
 
         cardBody[i].replaceChild(temp, cardBody[i].childNodes[0]);
         cardBody[i].replaceChild(wind, cardBody[i].childNodes[1]);
         cardBody[i].replaceChild(humidity, cardBody[i].childNodes[2]);
         cardHeader[i].replaceChild(title,  cardHeader[i].childNodes[0]);
+        cardHeader[i].replaceChild(img, cardHeader[i].childNodes[1]);
         
         index = index + 8
         if(index == 40)
@@ -73,7 +76,7 @@ function renderWeather(data){
 
     //Render city tittle 
     var day = document.createElement('h3');
-    day.textContent = data.city.name;
+    day.textContent = data.city.name + ' (' + data.city.country + ')';
     cardHeader[0].replaceChild(day,  cardHeader[0].childNodes[0]);
 
 };
