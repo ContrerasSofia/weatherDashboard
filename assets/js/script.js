@@ -1,6 +1,6 @@
 var searchBtn = $('.citySearch');
 var entryData = $('.cityEntry');
-var APIKey = '970b86b32913a5303a116990d171f9ba';
+var uv = '970b86b32913a5303a116990d171f9ba';
 var histBtns = $('.historyButtons');
 
 renderHistory();
@@ -18,7 +18,8 @@ histBtns.on('click', '.history', function (event) {
   });
 
 function getParameters(cityName){
-    var requestUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&limit=1&appid=' + APIKey;
+    var url = 'http://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&limit=1&appid=' + uv;
+    var requestUrl = url;
       fetch(requestUrl)
       .then(function (response) {
         if (response.status == 200) {
@@ -43,7 +44,7 @@ function getParameters(cityName){
 };
 
 function getWeather(lat, lon){
-    var requestUrl = 'https://api.openweathermap.org/data/2.5/forecast?lat='+lat+'&lon='+lon+'&cnt=45&appid='+APIKey+'&units=imperial';
+    var requestUrl = 'https://api.openweathermap.org/data/2.5/forecast?lat='+lat+'&lon='+lon+'&cnt=45&appid='+uv+'&units=imperial';
     
     fetch(requestUrl)
       .then(function (response) {
