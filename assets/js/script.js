@@ -18,7 +18,7 @@ histBtns.on('click', '.history', function (event) {
   });
 
 function getParameters(cityName){
-    var url = 'http://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&limit=1&appid=' + uv;
+    var url = 'https://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&limit=1&appid=' + uv;
     var requestUrl = url;
       fetch(requestUrl)
       .then(function (response) {
